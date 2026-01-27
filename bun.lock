@@ -10,6 +10,7 @@
         "@mastra/loggers": "^1.0.0",
         "@mastra/memory": "^1.0.0",
         "@mastra/observability": "^1.0.0",
+        "prettier": "^3.8.1",
         "zod": "^4",
       },
       "devDependencies": {
