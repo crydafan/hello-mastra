@@ -1,0 +1,31 @@
+{
+  "name": "hello-mastra",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^25.0.10",
+    "mastra": "^1.0.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "mastra dev",
+    "build": "mastra build",
+    "start": "mastra start"
+  },
+  "dependencies": {
+    "@mastra/core": "^1.0.4",
+    "@mastra/evals": "^1.0.0",
+    "@mastra/libsql": "^1.0.0",
+    "@mastra/loggers": "^1.0.0",
+    "@mastra/memory": "^1.0.0",
+    "@mastra/observability": "^1.0.0",
+    "zod": "^4"
+  }
+}
