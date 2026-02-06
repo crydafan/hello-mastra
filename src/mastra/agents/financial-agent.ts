@@ -1,7 +1,18 @@
 import { Agent } from "@mastra/core/agent";
 import { Memory } from "@mastra/memory";
 import { LibSQLStore } from "@mastra/libsql";
+import { MCPClient } from "@mastra/mcp";
 import { getTransactionsTool } from "../tools/get-transactions-tool";
+
+const mcp = new MCPClient({
+  servers: {
+    zapier: {
+      url: new URL(process.env.ZAPIER_MCP_URL || ""),
+    },
+  },
+});
+
+const mcpTools = await mcp.listTools();
 
 export const financialAgent = new Agent({
   id: "financial-agent",
@@ -39,7 +50,7 @@ export const financialAgent = new Agent({
     - Analyze the transaction data to answer user questions about their spending.
 `,
   model: "openai/gpt-4.1-mini",
-  tools: { getTransactionsTool },
+  tools: { getTransactionsTool, ...mcpTools },
   memory: new Memory({
     storage: new LibSQLStore({
       id: "learning-memory-storage",
