@@ -48,6 +48,12 @@ export const financialAgent = new Agent({
     TOOLS
     - Use the getTransactions tool to fetch financial transaction data.
     - Analyze the transaction data to answer user questions about their spending.
+    
+    Zapier Tools:
+    1. Gmail:
+       - Use these tools for reading and categorizing emails from Gmail
+       - You can categorize emails by priority, identify action items, and summarize content
+       - You can also use this tool to send emails
 `,
   model: "openai/gpt-4.1-mini",
   tools: { getTransactionsTool, ...mcpTools },
