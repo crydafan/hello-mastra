@@ -1,6 +1,6 @@
 import { Agent } from "@mastra/core/agent";
 import { Memory } from "@mastra/memory";
-import { LibSQLStore } from "@mastra/libsql";
+import { LibSQLStore, LibSQLVector } from "@mastra/libsql";
 import { MCPClient } from "@mastra/mcp";
 import { getTransactionsTool } from "../tools/get-transactions-tool";
 import path from "path";
@@ -68,6 +68,12 @@ export const financialAgent = new Agent({
     - Use it to store info for later use or organize info for the user.
     - You can use this notes directory to keep track of to-do list items.
     - Notes dir: ${path.join(process.cwd(), "..", "..", "..", "notes")}
+
+    Memory Capabilities:
+    - You have access to conversation memory and can remember details about users.
+    - When you learn something about a user, update their working memory using the appropriate tool.
+    - This includes their interests, preferences, conversation style (formal, casual, etc.)
+    - Use stored information to provide more personalized responses.
 `,
   model: "openai/gpt-4.1-mini",
   tools: { getTransactionsTool, ...mcpTools },
@@ -76,5 +82,34 @@ export const financialAgent = new Agent({
       id: "learning-memory-storage",
       url: "file:../../memory.db",
     }),
+    vector: new LibSQLVector({
+      id: "learning-memory-vector",
+      url: "file:../../memory.db",
+    }),
+    embedder: "openai/text-embedding-3-small",
+    options: {
+      // Keep last 20 messages in context
+      lastMessages: 20,
+      // Enable semantic search to find relevant past conversations
+      semanticRecall: {
+        topK: 3,
+        messageRange: {
+          before: 2,
+          after: 1,
+        },
+      },
+      // Enable working memory to remember user information
+      workingMemory: {
+        enabled: true,
+        template: `
+        <user>
+           <first_name></first_name>
+           <username></username>
+           <preferences></preferences>
+           <interests></interests>
+           <conversation_style></conversation_style>
+         </user>`,
+      },
+    },
   }),
 });
