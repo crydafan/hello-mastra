@@ -3,11 +3,19 @@ import { Memory } from "@mastra/memory";
 import { LibSQLStore } from "@mastra/libsql";
 import { MCPClient } from "@mastra/mcp";
 import { getTransactionsTool } from "../tools/get-transactions-tool";
+import path from "path";
 
 const mcp = new MCPClient({
   servers: {
     zapier: {
       url: new URL(process.env.ZAPIER_MCP_URL || ""),
+    },
+    textEditor: {
+      command: "npx",
+      args: [
+        "@modelcontextprotocol/server-filesystem",
+        path.join(process.cwd(), "..", "..", "..", "notes"),
+      ],
     },
   },
 });
@@ -54,6 +62,12 @@ export const financialAgent = new Agent({
        - Use these tools for reading and categorizing emails from Gmail
        - You can categorize emails by priority, identify action items, and summarize content
        - You can also use this tool to send emails
+
+    Filesystem Tools:
+    - You have filesystem read/write access to a notes directory.
+    - Use it to store info for later use or organize info for the user.
+    - You can use this notes directory to keep track of to-do list items.
+    - Notes dir: ${path.join(process.cwd(), "..", "..", "..", "notes")}
 `,
   model: "openai/gpt-4.1-mini",
   tools: { getTransactionsTool, ...mcpTools },
