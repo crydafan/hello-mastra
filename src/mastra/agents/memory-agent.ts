@@ -13,7 +13,7 @@ const memory = new Memory({
 // Create an agent with memory
 export const memoryAgent = new Agent({
   id: "memory-agent",
-  name: "MemoryAgent",
+  name: "Memory Agent",
   instructions: `
     You are a helpful assistant with memory capabilities.
     You can remember previous conversations and user preferences.
