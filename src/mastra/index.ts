@@ -12,6 +12,7 @@ import { contentWorkflow } from "./workflows/content-workflow";
 import { weatherAgent } from "./agents/weather-agent";
 import { financialAgent } from "./agents/financial-agent";
 import { memoryAgent } from "./agents/memory-agent";
+import { contentAgent } from "./agents/content-agent";
 import {
   toolCallAppropriatenessScorer,
   completenessScorer,
@@ -21,7 +22,13 @@ import { learningAssistantAgent } from "./agents/learning-assistant";
 
 export const mastra = new Mastra({
   workflows: { weatherWorkflow, contentWorkflow },
-  agents: { weatherAgent, financialAgent, memoryAgent, learningAssistantAgent },
+  agents: {
+    weatherAgent,
+    financialAgent,
+    memoryAgent,
+    learningAssistantAgent,
+    contentAgent,
+  },
   scorers: {
     toolCallAppropriatenessScorer,
     completenessScorer,
