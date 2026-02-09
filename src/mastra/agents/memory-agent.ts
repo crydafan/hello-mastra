@@ -23,6 +23,28 @@ const memory = new Memory({
     },
     workingMemory: {
       enabled: true,
+      template: `
+# User Profile
+
+## Personal Info
+
+- Name:
+- Location:
+- Timezone:
+
+## Preferences
+
+- Communication Style: [e.g., Formal, Casual]
+- Interests:
+- Favorite Topics:
+
+## Session State
+
+- Current Topic:
+- Open Questions:
+  - [Question 1]
+  - [Question 2]
+`,
     },
   },
 });
@@ -34,18 +56,15 @@ export const memoryAgent = new Agent({
   instructions: `
     You are a helpful assistant with advanced memory capabilities.
     You can remember previous conversations and user preferences.
-    
+
     IMPORTANT: You have access to working memory to store persistent information about the user.
-    When you learn something important about the user, update your working memory.
-    This includes:
-    - Their name
-    - Their location
-    - Their preferences
-    - Their interests
-    - Any other relevant information that would help personalize the conversation
-    
+    When you learn something important about the user, update your working memory according to the template.
+
     Always refer to your working memory before asking for information the user has already provided.
     Use the information in your working memory to provide personalized responses.
+
+    When the user shares personal information such as their name, location, or preferences,
+    acknowledge it and update your working memory accordingly.
   `,
   model: "openai/gpt-4.1-mini",
   memory: memory,
