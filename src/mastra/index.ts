@@ -8,7 +8,7 @@ import {
   SensitiveDataFilter,
 } from "@mastra/observability";
 import { weatherWorkflow } from "./workflows/weather-workflow";
-import { contentWorkflow } from "./workflows/content-workflow";
+import { contentWorkflow, aiContentWorkflow } from "./workflows/content-workflow";
 import { weatherAgent } from "./agents/weather-agent";
 import { financialAgent } from "./agents/financial-agent";
 import { memoryAgent } from "./agents/memory-agent";
@@ -21,7 +21,7 @@ import {
 import { learningAssistantAgent } from "./agents/learning-assistant";
 
 export const mastra = new Mastra({
-  workflows: { weatherWorkflow, contentWorkflow },
+  workflows: { weatherWorkflow, contentWorkflow, aiContentWorkflow },
   agents: {
     weatherAgent,
     financialAgent,
