@@ -16,10 +16,11 @@ import {
   completenessScorer,
   translationScorer,
 } from "./scorers/weather-scorer";
+import { learningAssistantAgent } from "./agents/learning-assistant";
 
 export const mastra = new Mastra({
   workflows: { weatherWorkflow },
-  agents: { weatherAgent, financialAgent, memoryAgent },
+  agents: { weatherAgent, financialAgent, memoryAgent, learningAssistantAgent },
   scorers: {
     toolCallAppropriatenessScorer,
     completenessScorer,
