@@ -2,30 +2,50 @@ import { Agent } from "@mastra/core/agent";
 import { Memory } from "@mastra/memory";
 import { LibSQLStore, LibSQLVector } from "@mastra/libsql";
 
-// Create a memory instance with custom conversation history settings
+// Create a memory instance with working memory configuration
 const memory = new Memory({
   storage: new LibSQLStore({
     id: "learning-memory-storage",
     url: "file:../../memory.db", // relative path from the `.mastra/output` directory
-  }),
+  }), // Storage for message history
   vector: new LibSQLVector({
     id: "learning-memory-vector",
     url: "file:../../vector.db", // relative path from the `.mastra/output` directory
-  }),
+  }), // Vector database for semantic search
+  embedder: "openai/text-embedding-3-small", // Embedder for message embeddings
   options: {
-    lastMessages: 20, // Include the last 20 messages in the context instead of the default 10
+    semanticRecall: {
+      topK: 3,
+      messageRange: {
+        before: 2,
+        after: 1,
+      },
+    },
+    workingMemory: {
+      enabled: true,
+    },
   },
 });
 
-// Create an agent with memory
+// Create an agent with the configured memory
 export const memoryAgent = new Agent({
   id: "memory-agent",
   name: "Memory Agent",
   instructions: `
-    You are a helpful assistant with memory capabilities.
+    You are a helpful assistant with advanced memory capabilities.
     You can remember previous conversations and user preferences.
-    When a user shares information about themselves, acknowledge it and remember it for future reference.
-    If asked about something mentioned earlier in the conversation, recall it accurately.
+    
+    IMPORTANT: You have access to working memory to store persistent information about the user.
+    When you learn something important about the user, update your working memory.
+    This includes:
+    - Their name
+    - Their location
+    - Their preferences
+    - Their interests
+    - Any other relevant information that would help personalize the conversation
+    
+    Always refer to your working memory before asking for information the user has already provided.
+    Use the information in your working memory to provide personalized responses.
   `,
   model: "openai/gpt-4.1-mini",
   memory: memory,
